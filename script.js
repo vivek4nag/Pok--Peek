@@ -6,6 +6,15 @@ let resetBtn = document.getElementById("reset")
 let search = document.getElementById("searchPoki")
 let errorMsg = document.querySelector(".error-msg")
 
+let loading = true; // ye loading wala for shimme UI
+
+
+function hideShimmer(){
+    const shimmers = document.querySelectorAll(".shimmer-card")
+    shimmers.forEach((item) => item.style.display = "none")
+    loading = false
+}
+
 
 // ek ek pokemon card ka function
 function pokeCard(data) {
@@ -44,6 +53,7 @@ function pokeCard(data) {
 // data api se fetch krne ke liye async function
 async function fetchPokeData() {
   for (let i = 1; i < 151; i++) {
+    if (i === 15) hideShimmer();
     const response = await fetch(`${POKE_API}${i}`);
     const data = await response.json();
     console.log(data);
