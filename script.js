@@ -69,7 +69,11 @@ function filterCards(){
     let allCards = document.querySelectorAll(".card");
     let filterValue = document.getElementById("poke-types").value
     allCards.forEach(card => {
-        if(card.classList.contains(filterValue)){
+        if(filterValue === "all"){
+            card.style.display = "block"
+            search.value = ""
+        }
+        else if(card.classList.contains(filterValue)){
             card.style.display = "block"
             
         }else{
