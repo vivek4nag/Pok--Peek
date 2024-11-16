@@ -9,7 +9,7 @@ let errorMsg = document.querySelector(".error-msg")
 let loading = true; // ye loading wala for shimme UI
 
 
-function hideShimmer(){
+function hideShimmer() {
     const shimmers = document.querySelectorAll(".shimmer-card")
     shimmers.forEach((item) => item.style.display = "none")
     loading = false
@@ -18,12 +18,12 @@ function hideShimmer(){
 
 // ek ek pokemon card ka function
 function pokeCard(data) {
-  let itemCard = document.createElement("div");
-  itemCard.classList.add("card");
-  itemCard.classList.add(`${data.types[0].type.name}`);
-  itemCard.innerHTML = `
-        <div class="card-inner ">
-            <div class="card-front">
+    let itemCard = document.createElement("div");
+    itemCard.classList.add("card");
+    // itemCard.classList.add(`${data.types[0].type.name}`);
+    itemCard.innerHTML = `
+        <div class="card-inner">
+            <div class="card-front ">
                 <div class="id">${data.id}</div>
                 <div class="image">
                     <img src=${data.sprites.front_default} alt="img">
@@ -46,37 +46,39 @@ function pokeCard(data) {
             </div>
         </div>
     `;
+    let innerCard = itemCard.querySelector(".card-inner")
+    innerCard.classList.add(`${data.types[0].type.name}`);// background color ke liye kr rhe ye tuchiyapa
 
-  return itemCard;
+    return itemCard;
 }
 
 // data api se fetch krne ke liye async function
 async function fetchPokeData() {
-  for (let i = 1; i < 151; i++) {
-    if (i === 15) hideShimmer();
-    const response = await fetch(`${POKE_API}${i}`);
-    const data = await response.json();
-    console.log(data);
-    // console.log(data.abilities[0].ability.name);
-    console.log(data.name);
-    let pokemonCard = pokeCard(data);
-    container.appendChild(pokemonCard);
-  }
+    for (let i = 1; i < 151; i++) {
+        if (i === 15) hideShimmer();
+        const response = await fetch(`${POKE_API}${i}`);
+        const data = await response.json();
+        console.log(data);
+        // console.log(data.abilities[0].ability.name);
+        console.log(data.name);
+        let pokemonCard = pokeCard(data);
+        container.appendChild(pokemonCard);
+    }
 }
 
 // filter krne ka function
-function filterCards(){
+function filterCards() {
     let allCards = document.querySelectorAll(".card");
     let filterValue = document.getElementById("poke-types").value
     allCards.forEach(card => {
-        if(filterValue === "all"){
+        if (filterValue === "all") {
             card.style.display = "block"
             search.value = ""
         }
-        else if(card.classList.contains(filterValue)){
+        else if (card.classList.contains(filterValue)) {
             card.style.display = "block"
-            
-        }else{
+
+        } else {
             card.style.display = "none"
         }
     });
@@ -92,15 +94,15 @@ function resetAll() {
     search.value = ""
 }
 
-function searchFilter(){
+function searchFilter() {
     let searchValue = search.value.toLowerCase();
     let allCards = document.querySelectorAll(".card");
 
     allCards.forEach((card) => {
         let naam = card.querySelector(".name").textContent;
-        if(naam.startsWith(searchValue)){
+        if (naam.startsWith(searchValue)) {
             card.style.display = "block"
-        }else{
+        } else {
             card.style.display = "none"
 
         }
@@ -110,5 +112,5 @@ function searchFilter(){
 fetchPokeData();
 
 filterBtn.addEventListener("click", filterCards)
-resetBtn.addEventListener("click",resetAll)
+resetBtn.addEventListener("click", resetAll)
 search.addEventListener("keyup", searchFilter)
